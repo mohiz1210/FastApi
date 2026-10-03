@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,HTTPException
 from pydantic import BaseModel
 
 app=FastAPI()
@@ -18,4 +18,13 @@ def create_user(user:User):
     }
 
 @app.put("/users{user_id}")
-def updated_user(user_id=int,notify:bool=False,user:User)
+def updated_user(user:User,user_id=int,notify:bool=False):
+    if user_id<len(users):
+        users[user_id]=user
+
+        return {
+            "message":"updated",
+            "notify":notify,
+            "data":user
+        }
+    raise HTTPException(status_code=404, detail="User not found")
